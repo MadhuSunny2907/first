@@ -1,0 +1,165 @@
+{
+	"name": "CopyPipeline_34x",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_34x",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_34x",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "HR.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "source//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "OracleSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureDataLakeStorage1",
+										"type": "LinkedServiceReference"
+									}
+								},
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_34x",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_34x",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "EMPLOYEES"
+						},
+						"destination": {
+							"fileName": "HR.EMPLOYEES.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "JOB_HISTORY"
+						},
+						"destination": {
+							"fileName": "HR.JOB_HISTORY.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "JOBS"
+						},
+						"destination": {
+							"fileName": "HR.JOBS.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "LOCATIONS"
+						},
+						"destination": {
+							"fileName": "HR.LOCATIONS.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "PRICES"
+						},
+						"destination": {
+							"fileName": "HR.PRICES.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "REGIONS"
+						},
+						"destination": {
+							"fileName": "HR.REGIONS.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "SUBJECTS"
+						},
+						"destination": {
+							"fileName": "HR.SUBJECTS.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "USERS"
+						},
+						"destination": {
+							"fileName": "HR.USERS.txt"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
