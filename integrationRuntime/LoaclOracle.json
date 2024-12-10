@@ -1,0 +1,6 @@
+{
+	"name": "LoaclOracle",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
