@@ -94,7 +94,13 @@
 							"inputs": [
 								{
 									"referenceName": "Source_Files_Folder",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
